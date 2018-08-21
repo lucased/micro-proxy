@@ -119,7 +119,7 @@ async function proxyRequest (req, res, dest, reqHeaders) {
   const url = new URL(dest)
   const proxyRes = await fetch(newUrl, {
     method: req.method,
-    headers: Object.assign({}, req.headers, reqHeaders, { host: url.host }),
+    headers: Object.assign({}, req.headers, { host: url.host }),
     body: req,
     compress: false
   })
@@ -128,7 +128,7 @@ async function proxyRequest (req, res, dest, reqHeaders) {
   res.statusCode = proxyRes.status
 
   // Forward headers
-  const headers = proxyRes.headers.raw()
+  const headers = Object.assign({}, proxyRes.headers.raw(), reqHeaders)
   for (const key of Object.keys(headers)) {
     res.setHeader(key, headers[key])
   }
