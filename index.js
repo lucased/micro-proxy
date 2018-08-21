@@ -21,16 +21,18 @@ module.exports = (rules) => {
   })
 
   const getDest = (req) => {
+    const newReq = {...req, url: req.url.split('?')[0]}
     for (const { pathnameRegexp, methods, dest } of lintedRules) {
-      if (pathnameRegexp.test(req.url) && (!methods || methods[req.method.toLowerCase()])) {
+      if (pathnameRegexp.test(newReq.url) && (!methods || methods[newReq.method.toLowerCase()])) {
         return dest
       }
     }
   }
 
   const getHeaders = (req) => {
+    const newReq = {...req, url: req.url.split('?')[0]}
     for (const { pathnameRegexp, methods, headers } of lintedRules) {
-      if (pathnameRegexp.test(req.url) && (!methods || methods[req.method.toLowerCase()])) {
+      if (pathnameRegexp.test(newReq.url) && (!methods || methods[newReq.method.toLowerCase()])) {
         return headers
       }
     }
